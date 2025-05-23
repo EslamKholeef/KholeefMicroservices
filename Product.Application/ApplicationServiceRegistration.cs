@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Product.Application.Helpers;
 
 namespace Product.Application
 {
@@ -7,6 +8,8 @@ namespace Product.Application
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationServiceRegistration).Assembly));
+            services.AddAutoMapper(typeof(ProductMappingProfile));
+
             return services;
         }
     }

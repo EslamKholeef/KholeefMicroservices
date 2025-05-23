@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Product.Domain.Entities;
 using Product.Domain.Interfaces;
 
@@ -23,21 +24,24 @@ namespace Product.Application.Commands
     public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, bool>
     {
         private readonly IProductRepository _repository;
-
-        public UpdateProductHandler(IProductRepository repository)
+        private readonly IMapper _mapper;
+        public UpdateProductHandler(IProductRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = new ProductModel
+
+            var existingProduct = await _repository.GetByIdAsync(request.Id);
+            if (existingProduct == null)
             {
-                Id = request.Id,
-                Name = request.Name,
-                Description = request.Description,
-                Price = request.Price
-            };
+                return false; 
+            }
+
+            var product = _mapper.Map<ProductModel>(request);
+
             return await _repository.UpdateAsync(product);
         }
     }

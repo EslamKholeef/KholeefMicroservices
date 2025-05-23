@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Product.Domain.Entities;
 using Product.Domain.Interfaces;
 
@@ -14,20 +15,17 @@ namespace Product.Application.Commands
     public class CreateProductHandler : IRequestHandler<CreateProductCommand, Unit>
     {
         private readonly IProductRepository _repository;
-
-        public CreateProductHandler(IProductRepository repository)
+        private readonly IMapper _mapper;
+        public CreateProductHandler(IProductRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<Unit> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = new ProductModel
-            {
-                Name = request.Name,
-                Description = request.Description,
-                Price = request.Price
-            };
+            var product = _mapper.Map<ProductModel>(request);
+
             await _repository.AddAsync(product);
             return Unit.Value;
         }
