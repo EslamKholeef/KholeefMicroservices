@@ -1,4 +1,4 @@
-﻿using Identity.Application.Commands;
+﻿using Identity.Application.Commands.RegisterCommand;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

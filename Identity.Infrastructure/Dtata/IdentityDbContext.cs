@@ -15,6 +15,20 @@ namespace Identity.Infrastructure.Dtata
         public IdentityDbContext(DbContextOptions<IdentityDbContext> options) : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder); //Eslam: This Required for Identity schema
 
+            modelBuilder.Entity<AppUser>(entity =>
+            {
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasMaxLength(20);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasMaxLength(20);
+            });
+        }
     }
 }

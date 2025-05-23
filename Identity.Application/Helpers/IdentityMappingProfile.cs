@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Identity.Application.Commands;
+using Identity.Application.Commands.RegisterCommand;
 using Identity.Domain.Entities;
 using System;
 using System.Collections.Generic;
