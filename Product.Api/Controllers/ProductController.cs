@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Product.Application.Commands;
+using Product.Application.Commands.CreateCommand;
+using Product.Application.Commands.UpdateCommand;
 using Product.Application.Queries;
 
 namespace Product.Api.Controllers

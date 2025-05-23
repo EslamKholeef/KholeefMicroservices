@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
+using Product.Application.Commands.CreateCommand;
+using Product.Application.Commands.UpdateCommand;
 using Product.Application.Helpers;
 
 namespace Product.Application
@@ -9,6 +12,9 @@ namespace Product.Application
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationServiceRegistration).Assembly));
             services.AddAutoMapper(typeof(ProductMappingProfile));
+
+            services.AddValidatorsFromAssemblyContaining<CreateProductCommandValidator>();
+            services.AddValidatorsFromAssemblyContaining<UpdateProductCommandValidator>();
 
             return services;
         }

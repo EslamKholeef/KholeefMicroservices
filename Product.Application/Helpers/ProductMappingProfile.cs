@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Product.Application.Commands;
+using Product.Application.Commands.CreateCommand;
+using Product.Application.Commands.UpdateCommand;
 using Product.Domain.Entities;
 using System;
 using System.Collections.Generic;
