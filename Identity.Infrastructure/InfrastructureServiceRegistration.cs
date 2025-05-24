@@ -2,27 +2,29 @@
 using Identity.Domain.Interfaces;
 using Identity.Infrastructure.Dtata;
 using Identity.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 namespace Identity.Infrastructure
 {
     public static class InfrastructureServiceRegistration
     {
-        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, string sqlConnectionString)
+        public static IServiceCollection AddInfrastructureServices( this IServiceCollection services, string sqlConnectionString)
         {
+            var builder = WebApplication.CreateBuilder();
+
             services.AddDbContext<IdentityDbContext>(options =>
                 options.UseSqlServer(sqlConnectionString));
 
-            services.AddIdentity<AppUser, IdentityRole<int>>()
-                .AddEntityFrameworkStores<IdentityDbContext>()
-                .AddDefaultTokenProviders();
-
             services.AddScoped<IUserRepository, UserRepository>();
 
-            services.AddIdentity<AppUser, IdentityRole>(options =>
+            services.AddIdentity<AppUser, IdentityRole<int>>(options =>
             {
                 //Eslam: Password validation rules
                 options.Password.RequireDigit = true;
@@ -39,6 +41,27 @@ namespace Identity.Infrastructure
             .AddEntityFrameworkStores<IdentityDbContext>()
             .AddDefaultTokenProviders();
 
+
+            //Eslam: JWT Authentication
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+                };
+            });
             return services;
         }
     }

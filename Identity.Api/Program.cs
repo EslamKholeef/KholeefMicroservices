@@ -38,7 +38,7 @@ builder.Services.AddApiVersioning(options =>
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(
-    builder.Configuration.GetConnectionString("SqlServer")!
+  builder.Configuration.GetConnectionString("SqlServer")! 
 );
 
 
