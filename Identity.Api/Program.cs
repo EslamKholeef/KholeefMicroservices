@@ -1,10 +1,16 @@
 using Identity.Application;
 using Identity.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-
+using Serilog;
+using Serilog.Events;
 
 
 var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+builder.Host.UseSerilog();
+
 
 
 builder.Services.AddControllers();
@@ -63,5 +69,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//app.UseSerilogRequestLogging(); //For Requests Logging
 
 app.Run();

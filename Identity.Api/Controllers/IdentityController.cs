@@ -12,17 +12,26 @@ namespace Identity.Api.Controllers
     public class IdentityController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<IdentityController> _logger;
 
-        public IdentityController(IMediator mediator)
+        public IdentityController(IMediator mediator, ILogger<IdentityController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
         {
+            _logger.LogInformation("Processing registration for email: {Email}", command.Email);
             var result = await _mediator.Send(command);
-            return result ? Ok("User registered successfully") : BadRequest("Registration failed");
+            if (result)
+            {
+                _logger.LogInformation("User registered successfully: {Email}", command.Email);
+                return Ok("User registered successfully");
+            }
+            _logger.LogWarning("User registration failed for {Email}", command.Email);
+            return  BadRequest("Registration failed");
         }
 
         [HttpPost("login")]
