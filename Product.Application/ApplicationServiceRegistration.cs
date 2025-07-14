@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Product.Application.Commands.CreateCommand;
 using Product.Application.Commands.UpdateCommand;
-using Product.Application.Helpers;
+using Product.Application.Mappings;
 
 namespace Product.Application
 {
