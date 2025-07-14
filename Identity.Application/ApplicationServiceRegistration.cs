@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Identity.Application.Commands.LoginCommand;
 using Identity.Application.Commands.RegisterCommand;
-using Identity.Application.Helpers;
+using Identity.Application.Mappings;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.Application

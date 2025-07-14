@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Identity.Application.Helpers
+namespace Identity.Application.Mappings
 {
     public class IdentityMappingProfile: Profile
     {
